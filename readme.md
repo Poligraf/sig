@@ -1,3 +1,5 @@
+<h1> Welcome to silence is golden(SIG).<h1>
+
 This is a pilot track and trace application for pharmacy hospital service written in laravel.
 
 Data is entered on two headless computers.One for chart recieval and one for chart completion.
