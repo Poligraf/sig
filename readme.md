@@ -1,4 +1,4 @@
-This is a pilot track and trace application for pharmacy hospital service.
+This is a pilot track and trace application for pharmacy hospital service written in laravel.
 
 Data is entered on two headless computers.One for chart recieval and one for chart completion.
 
