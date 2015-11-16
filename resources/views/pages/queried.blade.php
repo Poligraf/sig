@@ -15,9 +15,9 @@ document.getElementById('nhi').focus();
 <h1> Welcome to Silence is Golden (Sig) </h1>
 	<h2> {{ $queried }} </h2>
 
-	<h3 class="text-justify"><small>  To query a chart please enter a valid NHI followed by comma and  
-		the letter q. (Example:<mark>abc1234,q</mark>).<br>To resolve a query please enter NHI followed 
-		by comma and  the letter r. (Example:<mark>abc1234,r</mark>).   </small> </h3>
+	<h3 class="text-justify"><small>  To <mark>query </mark> a chart please enter <mark>q</mark> 
+		and scan barcode of queried chart.<br>
+		To <mark>resolve</mark> a query please enter <mark>r</mark> and scan barcode of queried chart.</small> </h3>
 	{!! Form::open( ['method' => 'POST','action' => 'PagesController@queryChart', 'class' => 'trackClass']) !!}
 		@include ('pages.partials.form',['submitButtonText' => 'Query The NHI'])
 	{!! Form::close() !!}
