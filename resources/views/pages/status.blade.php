@@ -28,13 +28,21 @@
 <body>
 
 <table class="table table-striped table-bordered table-hover table-condensed ">
-<th colspan="6" class="text-center">{{ $notification }}<br> Ward:{{\Input::get('ward')}}</th>
+<th colspan="6" class="text-center">{{ $notification }}<br> Ward:{{App\Http\Utilities\Ward::getwardname(\Input::get('ward'))}}</th>
 	<tr > 
 		<td class="text-center col-md-2"> NHI </td> 
 		<td class="text-center col-md-2"> Ward </td> 
 		<td class="text-center col-md-2"> Last Status Update </td> 
 		<td class="text-center col-md-2"> Chart Received <br>
-		@include('pages.partials.filter') 
+			<form>
+				<select name="ward">
+			@foreach (App\Http\Utilities\Ward::all() as $code => $wardname)
+				
+				<option value="{{$code }}" >{{ $wardname}} </option>
+			@endforeach
+			</select>
+  			<input type="submit" value="Filter By Ward" >
+			</form>
 		</td> 
 		<td class="text-center col-md-2"> Chart Completed</td>
 		<td class="text-center col-md-2"> Query</td>
