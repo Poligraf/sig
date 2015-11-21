@@ -31,7 +31,7 @@ class QueryNhiRequest extends Request
     public function messages()
     {
         return [
-            'nhi_and_ward.regex' => 'Please enter a valid NHI followed by a comma and an action.',
+            'nhi_and_ward.regex' => 'Please type either q or r and scan barcode of chart.',
             'nhi_and_ward.required' => 'Please enter a valid NHI.',
     ];
     }
