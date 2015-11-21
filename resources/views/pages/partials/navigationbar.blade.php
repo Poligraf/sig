@@ -14,6 +14,8 @@
                 </li>
                 <li><a href="/status?ward=All+Wards">Notification Status</a>
                 </li>
+                <li><a href="/excel_export">Export to Excel</a>
+                </li>
             </ul>
         </div>
     </div>

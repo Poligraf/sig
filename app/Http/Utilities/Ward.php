@@ -5,7 +5,7 @@ namespace App\Http\Utilities;
 class Ward {
 	protected static $wards = [
 	"All Wards"=>"All Wards",
-	"1"=>"Ward 1, Renal Inpatients",
+	"1"=>"Ward 1 - Renal Inpatients",
 	"2"=>"Ward 2 - AMC",
 	"4ATR"=>"Ward 4 - AT&R",
 	"5"=>"Ward 5 - AT&R",

@@ -21,3 +21,5 @@ Route::post('chart_update', 'PagesController@updatenhi');
 
 Route::get('query', 'PagesController@query');
 Route::post('query', 'PagesController@queryChart');
+
+Route::get('excel_export', 'PagesController@ExcelExport');

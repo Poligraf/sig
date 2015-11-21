@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Input;
 use App\Http\Requests\ValidateNhiRequest;
 use App\Http\Requests\QueryNhiRequest;
+use DB;
+use Excel;
 
 class PagesController extends Controller
 {
@@ -132,5 +134,27 @@ class PagesController extends Controller
         return redirect('query');
         
 
+    }
+
+    public function ExcelExport()
+    {
+        $track_times =  DB::table('track_and_trace')
+        ->orderBy('chart_query' , 'DESC')-> orderBy('receival_time' , 'DESC')
+        ->get(array('nhi', 'ward', 'receival_time', 'completed_time'));
+
+        foreach ($track_times as &$track_time) {
+            $track_time = (array)$track_time;
+        }
+       
+        
+        Excel::create('Filename', function($excel) use($track_times) {
+
+            $excel->sheet('Sheetname', function($sheet) use($track_times) {
+
+                $sheet->fromArray($track_times);
+
+            });
+
+        })->export('xlsx');
     }
 }
