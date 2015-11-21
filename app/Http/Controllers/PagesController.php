@@ -145,16 +145,20 @@ class PagesController extends Controller
         foreach ($track_times as &$track_time) {
             $track_time = (array)$track_time;
         }
-       
+      
         
         Excel::create('Filename', function($excel) use($track_times) {
 
             $excel->sheet('Sheetname', function($sheet) use($track_times) {
+                $sheet->setColumnFormat(array(
+                'C' => 'dd/mm/yy',
+                'D' => 'dd/mm/yy'
+                ));
 
-                $sheet->fromArray($track_times);
+                $sheet->with($track_times);
 
             });
 
-        })->export('xlsx');
+        })->download('csv');
     }
 }
