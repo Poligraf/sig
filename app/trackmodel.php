@@ -21,7 +21,7 @@ protected $dates = ['created_at', 'updated_at', 'receival_time','completed_time'
 public function getCompletedTimeAttribute($timestamp)
 {
     // flexible:
-    // return ( ! starts_with($timestamp, '0000')) ? $this->asDateTime($timestamp) : null;
+    return ( ! starts_with($timestamp, '0000')) ? $this->asDateTime($timestamp) : null;
     // or explicit:
     // return ($timestamp !== '0000-00-00 00:00:00') ? $this->asDateTime($timestamp) : 'None';
 }
