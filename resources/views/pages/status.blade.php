@@ -30,7 +30,7 @@
 
 <table class="table table-striped table-bordered table-hover table-condensed ">
 	<th colspan="6" class="text-center">
-		///
+		
 		<div>{{ $notification }}</div> 
 		<div>Ward: {{App\Http\Utilities\Ward::getwardname(\Input::get('ward'))}}</div>
 
@@ -83,7 +83,9 @@
 
 	@endforeach
 </table>
-    <script type="text/javascript" src="js/status.js"></script>
+   <!-- 
+	not sure if I will need javascript yet
+   <script type="text/javascript" src="js/status.js"></script>-->
 	</body>	
 </html>
 
