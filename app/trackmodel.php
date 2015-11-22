@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class trackmodel extends Model
 {
     public $table = "track_and_trace";
-   	protected $fillable = [
+   	
+    //mass assigned fields
+    protected $fillable = [
 
    	'nhi',
    	'ward',
@@ -16,10 +18,16 @@ class trackmodel extends Model
    	'completed_time'
    	];
 
+    // add dates specified as an instance of Carbon
 protected $dates = ['created_at', 'updated_at', 'receival_time','completed_time'];
+
+    //this is to bypass a bug in carbon where "0000-00-00 00:00:00" is not parsed as 
+    // "0000-00-00 00:00:00". So a getter needed to fix issue and pass correct value.
 
 public function getCompletedTimeAttribute($timestamp)
 {
+
+
     // flexible:
     return ( ! starts_with($timestamp, '0000')) ? $this->asDateTime($timestamp) : null;
     // or explicit:

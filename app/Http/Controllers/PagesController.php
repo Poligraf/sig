@@ -17,7 +17,8 @@ use Excel;
 class PagesController extends Controller
 {
 
-    
+    // explode data in both start() and stop()
+    //url in routes for methods called at /start and /chart_update
     public function Separate_Nhi_Ward($data)
         {
             $separated = explode(',',$data);
@@ -33,6 +34,7 @@ class PagesController extends Controller
         return view(('pages.start'), compact('recieved'));
     }   //
 
+    //exactly what it says on the tin store nhi and ward
         public function storenhi(ValidateNhiRequest $request)
     {
         $input =  Input::get('nhi_and_ward');
@@ -42,6 +44,8 @@ class PagesController extends Controller
         return redirect('start');
     }   
 
+    //if input is all wards show all wards if not filter by input ward
+    //form is called ward located in status.blade.php
     public function deliverystatus()
     {
         $notification = 'Welcome to SIG Delivery Status';
@@ -61,7 +65,7 @@ class PagesController extends Controller
 
     }//
 
-
+//chart completion timestamps
     public function stop()
     {
         $recieved = 'Chart Completed';;
@@ -69,6 +73,8 @@ class PagesController extends Controller
 
     }//
 
+//add timestamp of completed time for one occurence of nhi in past 24 hours
+// if multiple occurence of nhi present oldest recieval time get completed first  
     public function updatenhi(ValidateNhiRequest $request)
     {
         $input =  Input::get('nhi_and_ward');
@@ -99,6 +105,7 @@ class PagesController extends Controller
 
     }//
 
+//grab query or resolved by typing q or r in url:/query
     public function queryChart(QueryNhiRequest $request)
     {   $input =  Input::get('nhi_and_ward');
         $NhiQuery[0] = substr($input, 0, 1);
@@ -106,22 +113,30 @@ class PagesController extends Controller
         $NhiQuery['nhi'] = $NhiQuery [1];
         $NhiQuery['chart_query'] = $NhiQuery [0];
 
+        //query all nhi charts in past 2 hours 
         if ($NhiQuery['chart_query'] == 'q') {
+            $timeDiffFromQuery = Carbon::today()->subHours(2);
             $result = array( 
                             'chart_query' => '1',
                             'status' => 'Chart Queried'
+                            
             );
         }
 
+        //resolve all nhi issues in past 12 hours
         else{
+            $timeDiffFromQuery = Carbon::today()->subHours(12);
             $result = array( 
                             'chart_query' => '0',
                             'status' => 'Query Resolved'
+                            
                             );
         }
 
+        //query all instances of nhi within 2 hour period
+        //resolve all nhi queries within a 12 hours period
         $track =  trackmodel::where('nhi', $NhiQuery['nhi'])
-        ->where('receival_time', '>=' , (Carbon::today()->subHours(2)))
+        ->where('receival_time', '>=' , ($timeDiffFromQuery))
         ->orderBy('receival_time' , 'DESC')
         ->update($result); 
 
@@ -136,6 +151,7 @@ class PagesController extends Controller
 
     }
 
+    //export to csv
     public function ExcelExport()
     {
         $track_times =  DB::table('track_and_trace')

@@ -10,16 +10,23 @@
 |
 */
 
-
+//Query is started at /start
 Route::get('start', 'PagesController@start');
 Route::post('start', 'PagesController@storenhi');
 
+//Delivery status found under /status
 Route::get('status', 'PagesController@deliverystatus');
 
+//Chart completion under /chart_update
 Route::get('chart_update', 'PagesController@stop');
 Route::post('chart_update', 'PagesController@updatenhi');
 
+//Query under /query
 Route::get('query', 'PagesController@query');
 Route::post('query', 'PagesController@queryChart');
 
+/* Export to excel under /export_excel. 
+|  Note this exports to csv-Because php is not typed its easier to dump data as a csv
+|  and do manipulations in excel as csv. 	
+*/
 Route::get('excel_export', 'PagesController@ExcelExport');
