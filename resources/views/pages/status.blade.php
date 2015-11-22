@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--A track and trace application designed by Jovan Krstik "Poligraf" -->
-<body OnLoad="@yield('onload')">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -30,6 +30,7 @@
 
 <table class="table table-striped table-bordered table-hover table-condensed ">
 	<th colspan="6" class="text-center">
+		///
 		<div>{{ $notification }}</div> 
 		<div>Ward: {{App\Http\Utilities\Ward::getwardname(\Input::get('ward'))}}</div>
 

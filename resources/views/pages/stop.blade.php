@@ -1,8 +1,5 @@
 @extends('masterinput')
 
-@section ('onload')
-document.getElementById('nhi').focus();
-@stop
 
 @section('title')
 
