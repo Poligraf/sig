@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class trackmodel extends Model
+class Chart extends Model
 {
     public $table = "track_and_trace";
    	
@@ -15,11 +15,13 @@ class trackmodel extends Model
    	'ward',
    	'status',
    	'receival_time',
-   	'completed_time'
+   	'completed_time',
+    'chart_query_time',
+    'chart_query_resolved_time'
    	];
 
     // add dates specified as an instance of Carbon
-protected $dates = ['created_at', 'updated_at', 'receival_time','completed_time'];
+protected $dates = ['created_at', 'updated_at', 'receival_time','completed_time','chart_query_time','chart_query_resolved_time'];
 
     //this is to bypass a bug in carbon where "0000-00-00 00:00:00" is not parsed as 
     // "0000-00-00 00:00:00". So a getter needed to fix issue and pass correct value.
@@ -33,4 +35,5 @@ public function getCompletedTimeAttribute($timestamp)
     // or explicit:
     // return ($timestamp !== '0000-00-00 00:00:00') ? $this->asDateTime($timestamp) : 'None';
 }
+
 }

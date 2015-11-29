@@ -22,6 +22,8 @@ class TrackAndTraceTable extends Migration
             $table->boolean('chart_query')->default(false);;
             $table->timestamp('receival_time');
             $table->timestamp('completed_time');
+            $table->timestamp('query_time');
+            $table->timestamp('resolved_query_time');
             $table->timestamps();
         });
     }

@@ -212,8 +212,17 @@ class Ward {
 		return static::$wards;
 	}
 
-	public static function getwardname($code)
+	public static function getwardname($code="All Wards")
 	{
-		return static::$wards[$code];
+		if(isset(static::$wards[$code])){
+			return static::$wards[$code];
+		}
+
+
+		else{
+			return $code;
+		}
+
+		
 	}
 }

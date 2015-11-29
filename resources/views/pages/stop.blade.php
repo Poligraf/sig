@@ -12,7 +12,7 @@
 <h1> Welcome to Silence is Golden (Sig) </h1>
 	<h2> {{ $recieved }} </h2>
 	
-	{!! Form::open( ['method' => 'POST','action' => 'PagesController@updatenhi', 'class' => 'trackClass']) !!}
+	{!! Form::open( ['method' => 'POST','action' => 'PagesController@updateNhi', 'class' => 'trackClass']) !!}
 		@include ('pages.partials.form',['submitButtonText' => 'Update NHI with completed Time'])
 	{!! Form::close() !!}
 

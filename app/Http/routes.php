@@ -12,14 +12,14 @@
 
 //Query is started at /start
 Route::get('start', 'PagesController@start');
-Route::post('start', 'PagesController@storenhi');
+Route::post('start', 'PagesController@storeNhi');
 
 //Delivery status found under /status
-Route::get('status', 'PagesController@deliverystatus');
+Route::get('status', 'PagesController@deliveryStatus');
 
 //Chart completion under /chart_update
 Route::get('chart_update', 'PagesController@stop');
-Route::post('chart_update', 'PagesController@updatenhi');
+Route::post('chart_update', 'PagesController@updateNhi');
 
 //Query under /query
 Route::get('query', 'PagesController@query');

@@ -32,7 +32,7 @@
 	<th colspan="6" class="text-center">
 		
 		<div>{{ $notification }}</div> 
-		<div>Ward: {{App\Http\Utilities\Ward::getwardname(\Input::get('ward'))}}</div>
+		<div>Ward: {{App\Http\Utilities\Ward::getwardname(\Input::get('ward',"All Wards"))}}</div>
 
 		<div class="text-center">	
 			<form class = "form group">
