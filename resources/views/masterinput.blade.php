@@ -25,7 +25,11 @@
 			@endforeach
 		 
 	@endif
-  
+  	<!--Ajax Call -->
+  	<div>
+		<p id="info" class="alert alert-info" style="display: none;"> </p>
+	</div>
+	
 	</body>	
 	@yield('script')
 </html>

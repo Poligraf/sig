@@ -16,7 +16,7 @@ elixir(function(mix) {
         'navigationbar.css'
     ]);
     mix.scripts([
-        //"jquery-1.11.3.min.js", Not sure if I will need jquery later currently not needed
+        //"jquery-1.11.3.min.js",// Not sure if I will need jquery later currently not needed
         //"bootstrap.min.js",
         "script.js"
     ]);
