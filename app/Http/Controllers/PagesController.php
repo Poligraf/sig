@@ -40,7 +40,9 @@ class PagesController extends Controller
     } 
 
     private function redirectWithErrors($location) {
-        $redirect = redirect($location) -> with('error','Could not find NHI');
+        $error = 'Could not find NHI';
+        return response()->json(['nhi_and_ward' => [$error]],422);
+        $redirect = redirect($location) -> with('error',$error);
         return $redirect; 
     }
     
