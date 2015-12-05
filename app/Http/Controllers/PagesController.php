@@ -17,16 +17,27 @@ use DB;
 class PagesController extends Controller
 {
 
-    // explode data in both start() and stop()
+    // explode data by comma or by substring
     //url in routes for methods called at /start and /chart_update
-    private function SeparateNhiWard($data)
-        {
+    private function SeparateNhiWard($data, $bysubstring = null)
+    {
+        if ($bysubstring == null) {
             $separated = explode(',',$data);
             $separated['nhi'] = $separated [0];
             $separated['ward'] = $separated [1];        
             return $separated;
+        }
+
+        else {
+            $separated[0] = substr($data, 0, 1);
+            $separated[1] = substr($data, 1, 7);
+            $separated['nhi'] = $separated [1];
+            $separated['chart_query'] = $separated [0];
+            return $separated;
+
+        }
         
-        } 
+    } 
 
     private function redirectWithErrors($location) {
         $redirect = redirect($location) -> with('error','Could not find NHI');
@@ -87,16 +98,10 @@ class PagesController extends Controller
         
         if($track ==null){
             return ($this->redirectWithErrors('chart_update'));
-
         }
 
-
         $saving = (Chart::saveData($track));
-
-        
-
-       
-
+  
         return redirect('chart_update');
     }
 
@@ -110,13 +115,9 @@ class PagesController extends Controller
 //grab query or resolved by typing q or r in url:/query
     public function queryChart(QueryNhiRequest $request)
     {   $input =  Input::get('nhi_and_ward');
-        $NhiQuery[0] = substr($input, 0, 1);
-        $NhiQuery[1] = substr($input, 1, 7);
-        $NhiQuery['nhi'] = $NhiQuery [1];
-        $NhiQuery['chart_query'] = $NhiQuery [0];
-        //query all nhi charts in past 2 hours 
-        
-        if ($NhiQuery['chart_query'] == 'q') {
+        $nhiQuery =  $this->SeparateNhiWard($input,TRUE);
+
+        if ($nhiQuery['chart_query'] == 'q') {
             $timeDiffFromQuery = Carbon::today()->subHours(2);
             $result = array( 
                             'chart_query' => '1',
@@ -139,7 +140,7 @@ class PagesController extends Controller
 
         //query all instances of nhi within 2 hour period
         //resolve all nhi queries within a 12 hours period
-        $track =  Chart::scopeQueryNhi($NhiQuery['nhi'],$timeDiffFromQuery, $result); 
+        $track =  Chart::scopeQueryNhi($nhiQuery['nhi'],$timeDiffFromQuery, $result); 
 
                   
 
