@@ -57,7 +57,7 @@ class Chart extends Model
 
   }
 
-  public static function scopeQueryNhi($nhi, $timeDifference, $result) {
+  public static function QueryNhi($nhi, $timeDifference, $result) {
 
     return static::where('nhi', $nhi)
         ->where('receival_time', '>=' , ($timeDifference))
@@ -67,11 +67,38 @@ class Chart extends Model
 
   public static function saveData ($track){
 
-        $track -> completed_time = Carbon::now();
-        $track -> status = 'Chart Completed';
-        $track ->save();
+    $track -> completed_time = Carbon::now();
+    $track -> status = 'Chart Completed';
+    $track ->save();
 
 
   }
+
+  public static function timeQuery($chartQuery) {
+        if ($chartQuery === 'q') {
+            
+            return array( 
+                            'chart_query' => '1',
+                            'status' => 'Chart Queried',
+                            'query_time' =>Carbon::now()
+                            
+            );
+        }
+
+        //resolve all nhi issues in past 12 hours
+        else{
+            
+            return array( 
+                            'chart_query' => '0',
+                            'status' => 'Query Resolved',
+                            'resolved_query_time' =>Carbon::now()
+                            
+                            );
+        }
+
+  }
+
+
+
 
 }
