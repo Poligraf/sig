@@ -30,8 +30,8 @@ class PagesController extends Controller
 
     public function start()
     {
-        $recieved = 'Chart Received';
-        return view(('pages.start'), compact('recieved'));
+        $notification = 'Chart Received';
+        return view(('pages.start'), compact('notification'));
     }   //
 
     //exactly what it says on the tin store nhi and ward
@@ -52,15 +52,11 @@ class PagesController extends Controller
 
         if ((\Input::get('ward')== 'All Wards') or (\Input::get('ward')==null)){
 
-        $fields =  Chart::where('receival_time', '>=' , Carbon::today())
-        ->orderBy('chart_query' , 'DESC')-> orderBy('receival_time' , 'DESC')
-        ->get();
+        $fields =  Chart::ReceivalTimeToday()->get();
         }
-        else {
-        $fields =  Chart::where('receival_time', '>=' , Carbon::today())
-        ->orderBy('chart_query' , 'DESC')-> orderBy('receival_time' , 'DESC')
-        ->where('ward', \Input::get('ward'))->get();
 
+        else {
+        $fields =  Chart::ReceivalTimeToday()->FilterByWard(\Input::get('ward'))->get();
         }
         return view(('pages.status'), compact('notification','fields'));
 
@@ -80,22 +76,19 @@ class PagesController extends Controller
     {
         $input =  Input::get('nhi_and_ward');
         $NhiWardTime =  $this->SeparateNhiWard($input);
-        $track =  Chart::where('nhi', $NhiWardTime['nhi'])
-        ->where('ward',$NhiWardTime['ward'])
-        ->where('completed_time','0000-00-00 00:00:00')
-        ->where('receival_time', '>=' , Carbon::today())
-        ->orderBy('receival_time' , 'DESC')
-        ->first();
+        $track =  Chart::UpdateReceivalTime($NhiWardTime['nhi'], 
+        $NhiWardTime['ward']);
+
+
         if(empty($track)){
+
             return redirect('chart_update') -> with('error','Could not find NHI'); 
         }
+
         $track -> completed_time = Carbon::now();
         $track -> status = 'Chart Completed';
         $track ->save();
 
-        if(empty($track)){
-            return redirect('chart_update') -> with('error','Could not find NHI'); 
-        }
         return redirect('chart_update');
     }
 
