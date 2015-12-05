@@ -26,7 +26,13 @@ class PagesController extends Controller
             $separated['ward'] = $separated [1];        
             return $separated;
         
-        }  
+        } 
+
+    private function redirectWithErrors($location) {
+        $redirect = redirect($location) -> with('error','Could not find NHI');
+        return $redirect; 
+    }
+    
 
     public function start()
     {
@@ -45,7 +51,7 @@ class PagesController extends Controller
     }   
 
     //if input is all wards show all wards if not filter by input ward
-    //form is called ward located in status.blade.php
+    //form see status.blade.php and chart model
     public function deliveryStatus()
     {
         $notification = 'Welcome to SIG Delivery Status';
@@ -55,7 +61,8 @@ class PagesController extends Controller
         $fields =  Chart::ReceivalTimeToday()->get();
         }
 
-        else {
+        //filter by ward
+        else { 
         $fields =  Chart::ReceivalTimeToday()->FilterByWard(\Input::get('ward'))->get();
         }
         return view(('pages.status'), compact('notification','fields'));
@@ -76,18 +83,19 @@ class PagesController extends Controller
     {
         $input =  Input::get('nhi_and_ward');
         $NhiWardTime =  $this->SeparateNhiWard($input);
-        $track =  Chart::UpdateReceivalTime($NhiWardTime['nhi'], 
-        $NhiWardTime['ward']);
+        $track =  Chart::UpdateReceivalTime($NhiWardTime['nhi'],$NhiWardTime['ward']);
+        
+        if($track ==null){
+            return ($this->redirectWithErrors('chart_update'));
 
-
-        if(empty($track)){
-
-            return redirect('chart_update') -> with('error','Could not find NHI'); 
         }
 
-        $track -> completed_time = Carbon::now();
-        $track -> status = 'Chart Completed';
-        $track ->save();
+
+        $saving = (Chart::saveData($track));
+
+        
+
+       
 
         return redirect('chart_update');
     }
@@ -106,8 +114,8 @@ class PagesController extends Controller
         $NhiQuery[1] = substr($input, 1, 7);
         $NhiQuery['nhi'] = $NhiQuery [1];
         $NhiQuery['chart_query'] = $NhiQuery [0];
-
         //query all nhi charts in past 2 hours 
+        
         if ($NhiQuery['chart_query'] == 'q') {
             $timeDiffFromQuery = Carbon::today()->subHours(2);
             $result = array( 
@@ -131,15 +139,12 @@ class PagesController extends Controller
 
         //query all instances of nhi within 2 hour period
         //resolve all nhi queries within a 12 hours period
-        $track =  Chart::where('nhi', $NhiQuery['nhi'])
-        ->where('receival_time', '>=' , ($timeDiffFromQuery))
-        ->orderBy('receival_time' , 'DESC')
-        ->update($result); 
+        $track =  Chart::scopeQueryNhi($NhiQuery['nhi'],$timeDiffFromQuery, $result); 
 
                   
 
         if(empty($track)){
-            return redirect('query') -> with('error','Could not find NHI'); 
+            return ($this->redirectWithErrors('chart_update'));
         }
 
         return redirect('query');

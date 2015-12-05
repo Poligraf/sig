@@ -57,11 +57,21 @@ class Chart extends Model
 
   }
 
-  public function SaveToDatabase(){
+  public static function scopeQueryNhi($nhi, $timeDifference, $result) {
 
-    $track -> completed_time = Carbon::now();
-    $track -> status = 'Chart Completed';
-    return $track;
+    return static::where('nhi', $nhi)
+        ->where('receival_time', '>=' , ($timeDifference))
+        ->orderBy('receival_time' , 'DESC')
+        ->update($result);
+  }
+
+  public static function saveData ($track){
+
+        $track -> completed_time = Carbon::now();
+        $track -> status = 'Chart Completed';
+        $track ->save();
+
+
   }
 
 }
