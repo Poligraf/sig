@@ -13,12 +13,14 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     mix.styles([
         'bootstrap.min.css',
-        'navigationbar.css'
+        'navigationbar.css',
+        "toastr.min.css"
     ]);
     mix.scripts([
         "jquery-1.11.3.min.js",// Not sure if I will need jquery later currently not needed
         "bootstrap.min.js",
-        "script.js"
+        "script.js",
+        "toastr.min.js"
     ]);
     mix.scripts([
         "jquery-1.11.3.min.js",

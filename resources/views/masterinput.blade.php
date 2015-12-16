@@ -14,17 +14,7 @@
 </head>
 	<body>
 		@yield('body')
-	@if(Session::get('error'))
-		<p class="alert alert-info">{{Session::get('error')}} </p>
-	@endif	
 
-	@if ($errors->any())
-		
-			@foreach ($errors->all() as $error)
-			<p class="alert alert-info"> {{$error}} </p>
-			@endforeach
-		 
-	@endif
   	<!--Ajax Call -->
   	<div>
 		<p id="info" class="alert alert-info" style="display: none;"> </p>
@@ -32,5 +22,5 @@
 	
 	</body>	
 	@yield('script')
-	<!--<script type="text/javascript" src="js/all.js"> </script> -->
+	<script type="text/javascript" src="js/all.js"> </script> 
 </html>
