@@ -1,32 +1,34 @@
 // Ajax request to ensure reload of pages does not loose 
 // data during barcode scanning due to pages refresh
-document.getElementsByClassName('trackClass')[0].addEventListener('submit', function(e) {
- e.preventDefault();
+ $( '.trackClass' ).on( 'submit', function(e) {
 
-       var form = $(".trackClass");
+
+    var form = $(".trackClass");
     $.ajax({
         url     : form.attr("action"),
-        type    : form.attr("method"),
+        type    : "POST",
         data    : form.serialize(),
-        dataType: "json",
-        success : function ( json ) 
+        success : function () 
         {
-            toastr.success( json.message , "Notifications" );
+            $('.trackClass')[0].reset();
         },
         error   : function ( jqXhr, json, errorThrown ) 
         {
             var errors = jqXhr.responseJSON;
-            console.log(errors);
             var errorsHtml= '';
             $.each( errors, function( key, value ) {
-                errorsHtml += '<li>' + value[0] + '</li>'; 
+                errorsHtml += '<p>' + value[0] + '</p>'; 
             });
-            toastr.info( errorsHtml , "Error " );
+            toastr.error( errorsHtml , "Error " + jqXhr.status +': '+ errorThrown);
         }
     })
-
-toastr.options = {
-  "progressBar": true,
-  "positionClass": "toast-bottom-right"
-}
- })
+    .done(function(response)
+    {
+        //
+    })
+    .fail(function( jqXHR, json ) 
+    {
+        //
+    });
+    return false;
+});
