@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use DB;
 
 class Chart extends Model
 {
@@ -57,7 +58,7 @@ class Chart extends Model
 
   }
 
-  public static function QueryNhi($nhi, $timeDifference, $result) {
+  public static function queryNhi($nhi, $timeDifference, $result) {
 
     return static::where('nhi', $nhi)
         ->where('receival_time', '>=' , ($timeDifference))
@@ -96,6 +97,11 @@ class Chart extends Model
                             );
         }
 
+  }
+
+  public static function exportToExcel() {
+    return DB::table('track_and_trace')-> orderBy('receival_time' , 'DESC')
+        ->get(array('nhi', 'ward', 'receival_time', 'completed_time','query_time','resolved_query_time'));
   }
 
 

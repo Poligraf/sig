@@ -12,7 +12,7 @@ use Input;
 use App\Http\Requests\ValidateNhiRequest;
 use App\Http\Requests\QueryNhiRequest;
 use Excel;
-use DB;
+
 
 class PagesController extends Controller
 {
@@ -39,17 +39,14 @@ class PagesController extends Controller
         
     } 
 
-    private function redirectWithErrors(Request $request, $location) {
+    private function redirectWithErrors() {
         
         $error = 'Could not find NHI';
-        if($request->wantsJson()){
+        
         return response()->json(['nhi_and_ward' => [$error]],422);
-        }
-
-        $redirect = redirect($location) -> with('error',$error);
-        return $redirect; 
-    }
     
+    }
+   
 
     public function start()
     {
@@ -63,8 +60,8 @@ class PagesController extends Controller
         $input =  Input::get('nhi_and_ward');
         $NhiWardTime =  $this->SeparateNhiWard($input);
         $NhiWardTime['receival_time'] = Carbon::now();
-        Chart::create($NhiWardTime);
-        return redirect('start');
+        $insertNhi = Chart::create($NhiWardTime);
+        return $insertNhi;
     }   
 
     //if input is all wards show all wards if not filter by input ward
@@ -103,12 +100,16 @@ class PagesController extends Controller
         $track =  Chart::UpdateReceivalTime($NhiWardTime['nhi'],$NhiWardTime['ward']);
         
         if($track ===null){
-            return ($this->redirectWithErrors($request, 'chart_update'));
+            return $this->redirectWithErrors();
         }
 
-        $saving = (Chart::saveData($track));
-  
-        return redirect('chart_update');
+        else {
+
+        $saveData = (Chart::saveData($track));
+
+        return response()->json([$saveData]);
+        }
+        
     }
 
     public function query()
@@ -133,16 +134,19 @@ class PagesController extends Controller
         }
         //query all instances of nhi within 2 hour period
         //resolve all nhi queries within a 12 hours period
-        $track =  Chart::QueryNhi($nhiQuery['nhi'],$timeDiffFromQuery, $result); 
+        $track =  Chart::queryNhi($nhiQuery['nhi'],$timeDiffFromQuery, $result); 
 
                   
 
         if(empty($track)){
-            return ($this->redirectWithErrors($request,'chart_update'));
+            return $this->redirectWithErrors();
         }
 
-        return redirect('query');
+        else {
+
+        return response()->json([$track]);
         
+        }
 
     }
 
@@ -156,9 +160,7 @@ class PagesController extends Controller
 
     public function ExcelExport()
     {
-        $track_times =  DB::table('track_and_trace')
-        ->orderBy('chart_query' , 'DESC')-> orderBy('receival_time' , 'DESC')
-        ->get(array('nhi', 'ward', 'receival_time', 'completed_time','query_time','resolved_query_time'));
+        $track_times =  Chart::exportToExcel();
         foreach ($track_times as &$track_time) {
             $track_time = (array)$track_time;
         }
