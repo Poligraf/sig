@@ -178,4 +178,11 @@ class PagesController extends Controller
             });
         })->download('csv');
     }
+
+    public function fallbackForOldIE()
+    {
+        
+        return view('pages.error');
+
+    }//
 }

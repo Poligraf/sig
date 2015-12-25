@@ -25,6 +25,8 @@ Route::post('chart_update', 'PagesController@updateNhi');
 Route::get('query', 'PagesController@query');
 Route::post('query', 'PagesController@queryChart');
 
+Route::get('error', 'PagesController@fallbackForOldIE');
+
 /* Export to excel under /export_excel. 
 |  Note this exports to csv-Because php is not typed its easier to dump data as a csv
 |  and do manipulations in excel as csv. 	
