@@ -19,9 +19,9 @@ class PagesController extends Controller
 
     // explode data by comma or by substring
     //url in routes for methods called at /start and /chart_update
-    private function SeparateNhiWard($data, $bysubstring = null)
+    private function separateNhiWard($data, $bySubstring = null)
     {
-        if ($bysubstring === null) {
+        if ($bySubstring === null) {
             $separated = explode(',',$data);
             $separated['nhi'] = $separated [0];
             $separated['ward'] = $separated [1];        
@@ -43,7 +43,7 @@ class PagesController extends Controller
         
         $error = 'Could not find NHI';
         
-        return response()->json(['nhi_and_ward' => [$error]],422);
+        return response()->json(['nhi_and_ward' => [$error]],400);
     
     }
    
@@ -58,9 +58,9 @@ class PagesController extends Controller
         public function storeNhi(ValidateNhiRequest $request)
     {
         $input =  Input::get('nhi_and_ward');
-        $NhiWardTime =  $this->SeparateNhiWard($input);
-        $NhiWardTime['receival_time'] = Carbon::now();
-        $insertNhi = Chart::create($NhiWardTime);
+        $nhiWardTime =  $this->separateNhiWard($input);
+        $nhiWardTime['receival_time'] = Carbon::now();
+        $insertNhi = Chart::create($nhiWardTime);
         return $insertNhi;
     }   
 
@@ -72,16 +72,19 @@ class PagesController extends Controller
 
         if ((\Input::get('ward')=== 'All Wards') or (\Input::get('ward')===null)){
 
-        $fields =  Chart::ReceivalTimeToday()->get();
+            $fields =  Chart::receivalTimeToday()->get();
         }
 
         //filter by ward
         else { 
-        $fields =  Chart::ReceivalTimeToday()->FilterByWard(\Input::get('ward'))->get();
+            $fields =  Chart::receivalTimeToday()->filterByWard(\Input::get('ward'))->get();
+            if($fields->isEmpty()){
+                abort(404);
+            }            
         }
-        return view(('pages.status'), compact('notification','fields'));
 
-    }//
+        return view(('pages.status'), compact('notification','fields'));
+    }
 
 //chart completion timestamps
     public function stop()
@@ -96,8 +99,8 @@ class PagesController extends Controller
     public function updateNhi(ValidateNhiRequest $request)
     {
         $input =  Input::get('nhi_and_ward');
-        $NhiWardTime =  $this->SeparateNhiWard($input);
-        $track =  Chart::UpdateReceivalTime($NhiWardTime['nhi'],$NhiWardTime['ward']);
+        $nhiWardTime =  $this->separateNhiWard($input);
+        $track =  Chart::updateReceivalTime($nhiWardTime['nhi'],$nhiWardTime['ward']);
         
         if($track ===null){
             return $this->redirectWithErrors();
@@ -122,9 +125,10 @@ class PagesController extends Controller
 //grab query or resolved by typing q or r in url:/query
     public function queryChart(QueryNhiRequest $request)
     {   $input =  Input::get('nhi_and_ward');
-        $nhiQuery =  $this->SeparateNhiWard($input,TRUE);
+        $nhiQuery =  $this->separateNhiWard($input,TRUE);
         
         $result = Chart::timeQuery($nhiQuery['chart_query']);
+        
         if ($nhiQuery['chart_query'] ==='q'){
             $timeDiffFromQuery = Carbon::today()->subHours(2);
         }
@@ -137,7 +141,6 @@ class PagesController extends Controller
         $track =  Chart::queryNhi($nhiQuery['nhi'],$timeDiffFromQuery, $result); 
 
                   
-
         if(empty($track)){
             return $this->redirectWithErrors();
         }
@@ -180,9 +183,7 @@ class PagesController extends Controller
     }
 
     public function fallbackForOldIE()
-    {
-        
+    {        
         return view('pages.error');
-
     }//
 }

@@ -22,7 +22,6 @@ d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector
         type    : "POST",
         data    : form.serialize(),
         dataType : 'json',
-        cache       :   false,
         success : function () 
         {
             $('.trackClass')[0].reset();

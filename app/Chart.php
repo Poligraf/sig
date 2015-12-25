@@ -47,7 +47,7 @@ class Chart extends Model
     return $query->where('ward', $input);
   }
 
-  public static function UpdateReceivalTime($nhi,$ward){
+  public static function updateReceivalTime($nhi,$ward){
 
 
     return static::where('nhi', $nhi)
