@@ -16,6 +16,14 @@ elixir(function(mix) {
         'navigationbar.css',
         "toastr.min.css"
     ]);
+    
+    mix.styles([
+        'bootstrap.min.css',
+        'the-big-picture.css'
+ 
+    ],'public/css/404.css');
+
+
     mix.scripts([
         "jquery-1.11.3.min.js",// Not sure if I will need jquery later currently not needed
         "bootstrap.min.js",

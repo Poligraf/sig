@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 	<!--[if lte IE 9]>
-<meta HTTP-EQUIV="REFRESH" content="0; url=/error">
+<meta HTTP-EQUIV="REFRESH" content="0; url=/outdatedbrowser">
 <![endif]-->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
