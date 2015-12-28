@@ -47,7 +47,9 @@ d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector
     });
     toastr.options = {
                         
-                       "positionClass": "toast-bottom-center"
+                       "positionClass": "toast-bottom-center",
+                       "closeButton": true,
+                       "progressBar": true
                     }
 
     return false;

@@ -200,6 +200,7 @@ class Ward {
 	"WVAC"=>"WINTER VACCINE CLINIC",
 	"WIRI"=>"WIRI SCHOOLS",
 	"WHDR"=>"Women's Health Doctors (Obst & Gyn)"
+	
 	];
 	public static function all()
 	{
@@ -207,7 +208,14 @@ class Ward {
 	}
 
 	public static function getwardname($code)
+
 	{
-		return static::$wards[$code];
+		if (isset(static::$wards[$code])) {
+			return static::$wards[$code];
+		}
+
+		else {
+			return null;
+		}
 	}
 }

@@ -76,11 +76,10 @@ class PagesController extends Controller
         }
 
         //filter by ward
-        else { 
+        else 
+        { 
             $fields =  Chart::receivalTimeToday()->filterByWard(\Input::get('ward'))->get();
-            if($fields->isEmpty()){
-                abort(404);
-            }            
+        
         }
 
         return view(('pages.status'), compact('notification','fields'));

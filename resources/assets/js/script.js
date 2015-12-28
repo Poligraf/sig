@@ -34,7 +34,9 @@
     });
     toastr.options = {
                         
-                       "positionClass": "toast-bottom-center"
+                       "positionClass": "toast-bottom-center",
+                       "closeButton": true,
+                       "progressBar": true
                     }
 
     return false;
